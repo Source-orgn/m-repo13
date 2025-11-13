@@ -1,0 +1,14 @@
+{
+  "name": "@package_test/npm-package-Registry",
+  "version": "1.0.0",
+  "description": "test npm package registry",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "npmconfigset":{
+    "@package_test:registry": "https://gitlab.com/api/v4/projects/CI_PROJECT_ID/packages/npm/"
+  }
+}
