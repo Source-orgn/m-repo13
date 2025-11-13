@@ -3,4 +3,5 @@ image: node:latest
 deploy:
   stage: deploy
   script:
+    - npm config list
     - npm publish --registry https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/packages/npm/
