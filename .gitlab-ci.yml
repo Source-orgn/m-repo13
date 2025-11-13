@@ -1,0 +1,5 @@
+image: node:latest
+deploy:
+  stage: deploy
+  script:
+     - npm publish
