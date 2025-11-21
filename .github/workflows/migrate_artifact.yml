@@ -1,0 +1,46 @@
+name: Build and Publish Suzuki Package
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Suzuki artifact
+        run: |
+          echo "building suzuki...."
+          mkdir build
+          echo "Suzuki build artifacts" > build/README.txt
+          tar -czf suzuki.tar.gz build
+          echo "done"
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: suzuki-build
+          path: suzuki.tar.gz
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: suzuki-build
+
+      - name: Publish to GitHub Packages
+        run: |
+          echo "Publishing package to GitHub Packages..."
+          curl \
+            -X PUT \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/octet-stream" \
+            --upload-file suzuki.tar.gz \
+            "https://uploads.github.com/repos/${{ github.repository }}/releases/assets?name=suzuki.tar.gz"
